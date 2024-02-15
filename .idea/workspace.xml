@@ -5,7 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5c86dd35-c6db-433c-aa11-c4532cb77630" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_07_11_2023_17_24_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_07_11_2023_17_24__Changes_.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/data/BCS-DBT file-paths-train-v2.csv" beforeDir="false" afterPath="$PROJECT_DIR$/app/data/BCS-DBT file-paths-train-v2.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/readImages.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/readImages.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -48,7 +51,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "D:/Licenta/Project/app/readImages.py",
+    "last_opened_file_path": "D:/Licenta/Project/app",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -98,6 +101,7 @@
       <workItem from="1696950364332" duration="1813000" />
       <workItem from="1697024371868" duration="11000" />
       <workItem from="1697720847197" duration="87000" />
+      <workItem from="1707996211377" duration="607000" />
     </task>
     <servers />
   </component>
