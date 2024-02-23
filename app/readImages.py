@@ -1,15 +1,9 @@
 import os
 import matplotlib.pyplot as plt
-import numpy
 import numpy as np
 import pandas as pd
 import torch.utils.data
-import trimesh as trimesh
-from skimage import measure
-import vtk
 from torchvision.transforms import v2
-from stl import mesh
-from PIL import Image
 from duke_dbt_data import dcmread_image
 
 
@@ -21,69 +15,80 @@ class MyDataset(torch.utils.data.Dataset):
         self.transforms = transforms
         self.base_folder = base_folder
         self.threshold = threshold
-        self.images_file = os.path.join(self.base_folder, "data/images/manifest-1617905855234/")
+        self.images_file = os.path.join(self.base_folder, "images/manifest-1617905855234/")
         self.label_file = os.path.join(self.base_folder, f"labels/BCS-DBT labels-{split_name}-v2.csv")
         self.data_paths = []
-        self.breastCancerData = pd.read_csv(f"BCS-DBT file-paths-{split_name}-v2.csv")
+        self.breastCancerData = pd.read_csv(os.path.join(self.base_folder, f"BCS-DBT file-paths-{split_name}-v2.csv"))
         self.breastCancerLabel = pd.read_csv(self.label_file)
         self.load_data()
+        self.biggest_value_for_color = 0
 
     def load_data(self):
-        for i in range(0, self.threshold):
-            view_series = self.breastCancerData.iloc[i]
-            self.data_paths.append(os.path.join(self.images_file, view_series["descriptive_path"]))
+        if self.threshold is not None:
+            for idx in range(0, self.threshold):
+                view_series = self.breastCancerData.iloc[idx]
+                self.data_paths.append(os.path.join(self.images_file, view_series["descriptive_path"]))
+        else:
+            for series in self.breastCancerData.iloc:
+                self.data_paths.append(os.path.join(self.images_file, series["descriptive_path"]))
 
     def __len__(self):
         return len(self.data_paths)
 
     def load_label(self, idx):
-        return self.breastCancerLabel.iloc[idx][3:].values
+        return np.array(self.breastCancerLabel.iloc[idx][3:].values, dtype=np.float32)
 
     def load_image(self, path):
         slices = dcmread_image(fp=path, view="rmlo")
         middle_of_slices = slices.shape[0] // 2
         middle_of_image = self.number_of_slices // 2
-        return numpy.array(slices[middle_of_slices - middle_of_image: middle_of_slices + middle_of_image], dtype=numpy.float16)
+        slices = np.array(slices[middle_of_slices - middle_of_image: middle_of_slices + middle_of_image],
+                          dtype=np.float32).transpose((1, 2, 0))
+        return np.divide(slices, 65535)
 
     def __getitem__(self, index):
         image = self.load_image(self.data_paths[index])
         label = self.load_label(index)
         if self.transforms is not None:
             image = self.transforms(image)
+        self.biggest_value_for_color = image.max()
         return image, label
 
 
-trainDataset = MyDataset(base_folder="./data", transforms=v2.Compose([v2.Resize(1996), v2.CenterCrop(1890), v2.ToTensor()]), threshold=2, split_name="train")
-testDataset = MyDataset(base_folder="./data", transforms=v2.Compose([v2.Resize(1996), v2.CenterCrop(1890), v2.ToTensor()]), threshold=2, split_name="test")
-print("Number of samples in dataset: ", len(trainDataset))
-print("Number of samples in dataset: ", len(testDataset))
-#print("Shape of the first image: ", dataset[0][0].shape)
-
-bs = 2
-trainDataloader = torch.utils.data.DataLoader(trainDataset, batch_size=bs, shuffle=True, num_workers=0)
-testDataloader = torch.utils.data.DataLoader(testDataset, batch_size=bs, shuffle=True, num_workers=0)
-for i_batch, sample_batched in enumerate(trainDataloader):
-    imgs = sample_batched[0]
-    segs = sample_batched[1]
-
-    rows, cols = bs, 2
-    figure = plt.figure(figsize=(10, 10))
-
-    for i in range(0, bs):
-        figure.add_subplot(rows, cols, 2*i+1)
-        plt.title('image')
-        plt.axis("off")
-        plt.imshow(imgs[i].cpu().numpy().transpose(1, 2, 0)[0], cmap="gray")
-
-        print(segs)
-        # figure.add_subplot(rows, cols, 2*i+2)
-        # plt.title('seg')
-        # plt.axis("off")
-        # plt.imshow(segs[i].cpu().numpy().transpose(1, 2, 0), cmap="gray")
-    plt.show()
-    # display the first 3 batches
-    if i_batch == 2:
-        break
+# trainDataset = MyDataset(base_folder="D:/Licenta/Proiect/data/", transforms=v2.Compose([v2.Resize(1996),
+#                                                                                         v2.CenterCrop(1890),
+#                                                                                         v2.ToTensor()]
+#                                                                                        ),
+#                          threshold=2, split_name="train")
+# testDataset = MyDataset(base_folder="D:/Licenta/Proiect/data/", transforms=v2.Compose([v2.Resize(1996),
+#                                                                                        v2.CenterCrop(1890),
+#                                                                                        v2.ToTensor()]
+#                                                                                       ),
+#                         threshold=2, split_name="test")
+# print("Number of samples in dataset: ", len(trainDataset))
+# print("Number of samples in dataset: ", len(testDataset))
+#
+# bs = 2
+# trainDataloader = torch.utils.data.DataLoader(trainDataset, batch_size=bs, shuffle=True, num_workers=0)
+# testDataloader = torch.utils.data.DataLoader(testDataset, batch_size=bs, shuffle=True, num_workers=0)
+#
+# for i_batch, sample_batched in enumerate(trainDataloader):
+#     imgs = sample_batched[0]
+#     segs = sample_batched[1]
+#
+#     rows, cols = bs, 2
+#     figure = plt.figure(figsize=(10, 10))
+#
+#     for i in range(0, bs):
+#         figure.add_subplot(rows, cols, 2 * i + 1)
+#         plt.title('image')
+#         plt.axis("off")
+#         plt.imshow(imgs[i].cpu().numpy()[0])
+#
+#         print(segs[i])
+#     plt.show()
+#     if i_batch == 2:
+#         break
 
 # allImages = []
 #

@@ -3,40 +3,42 @@ import os
 from random import random
 import pandas as pd
 
-def splitData():
-    df = pd.read_csv("data/BCS-DBT file-paths-v2.csv")
-    dfTest = pd.read_csv("data/BCS-DBT file-paths-v2.csv")
-    dfLabelTrain = pd.read_csv("data/labels/BCS-DBT labels-v2.csv")
-    dfLabelTest = pd.read_csv("data/labels/BCS-DBT labels-v2.csv")
+
+def split_data():
+    df = pd.read_csv("D:/Licenta/Proiect/data/BCS-DBT file-paths-v2.csv")
+    df_test = pd.read_csv("D:/Licenta/Proiect/data/BCS-DBT file-paths-v2.csv")
+    df_label_train = pd.read_csv("D:/Licenta/Proiect/data/labels/BCS-DBT labels-v2.csv")
+    df_label_test = pd.read_csv("D:/Licenta/Proiect/data/labels/BCS-DBT labels-v2.csv")
     threshold = df.shape[0]
     train_test_proportion = 0.8
     for i in range(0, threshold):
         accepted = random()
         if accepted > train_test_proportion:
             df = df.drop(i)
-            dfLabelTrain = dfLabelTrain.drop(i)
+            df_label_train = df_label_train.drop(i)
         else:
-            dfTest = dfTest.drop(i)
-            dfLabelTest = dfLabelTest.drop(i)
-        print(df.iloc[i]["PatientID"])
+            df_test = df_test.drop(i)
+            df_label_test = df_label_test.drop(i)
     df.to_csv("BCS-DBT file-paths-train-v2.csv")
-    dfTest.to_csv("BCS-DBT file-paths-test-v2.csv")
-    dfLabelTrain.to_csv("labels/BCS-DBT labels-train-v2.csv")
-    dfLabelTest.to_csv("labels/BCS-DBT labels-test-v2.csv")
+    df_test.to_csv("BCS-DBT file-paths-test-v2.csv")
+    df_label_train.to_csv("labels/BCS-DBT labels-train-v2.csv")
+    df_label_test.to_csv("labels/BCS-DBT labels-test-v2.csv")
 
-def cleanFiles():
-    new_Rows = ""
-    with open("data/BCS-DBT file-paths-train-v2.csv", 'r') as file:
+
+def clean_files(split_name):
+    new_rows = ""
+    with open(f"D:/Licenta/Proiect/data/BCS-DBT file-paths-{split_name}-v2.csv", 'r') as file:
         reader = csv.reader(file, delimiter=',')
         for row in reader:
-            new_Rows = new_Rows + row[1]
+            new_rows = new_rows + row[1]
             for column in row[2:]:
-                new_Rows = new_Rows + ',' + column
-            new_Rows = new_Rows + '\n'
-    with open("data/BCS-DBT file-paths-train-v2.csv", 'w+') as writeTo:
-        writeTo.write(new_Rows[:-1])
+                new_rows = new_rows + ',' + column
+            new_rows = new_rows + '\n'
+    with open(f"D:/Licenta/Proiect/data/BCS-DBT file-paths-{split_name}-v2.csv", 'w+') as writeTo:
+        writeTo.write(new_rows[:-1])
 
-def keepRMLOViews():
+
+def keep_rmlo_views():
     df = pd.read_csv("data/BCS-DBT file-paths-v2.csv")
     for study in df.iloc:
         view_series = study
