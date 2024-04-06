@@ -1,0 +1,91 @@
+@misc{link1,
+    key = {Z},
+    note = {\href{https://wiki.cancerimagingarchive.net/pages/viewpage.action?pageId=64685580#6468558050a1e1bdf0de46de92128576e1d3e9b1}{https://wiki.cancerimagingarchive.net/pages/viewpage.action?pageId=64685\\580\#6468558050a1e1bdf0de46de92128576e1d3e9b1}}
+}
+@misc{link2,
+    key = {Z},
+    note = {\href{https://www.cancer.org/cancer/types/breast-cancer/about/how-common-is-breast-cancer.html}{https://www.cancer.org/cancer/types/breast-cancer/about/how-common-is-breast-cancer.html}}
+}
+@article{carte2,
+    author = {Naji M. A. and El Filali S. and Aarika K. and Benlahmar E. H. and Abdelouhahid R. A.and Debauche, O.},
+    year = {2021},
+    title = {Machine Learning Algorithms For Breast Cancer Prediction And Diagnosis},
+    journal = {Procedia Computer Science},
+    volume = {191},
+    pages = {487-492}
+}
+@misc{link3,
+    key = {Z},
+    note = {\href{https://archive.ics.uci.edu/dataset/17/breast+cancer+wisconsin+diagnostic}{https://archive.ics.uci.edu/dataset/17/breast+cancer+wisconsin+diagnostic}}
+}
+@article{carte1,
+  author = {Nanglia S. and Ahmad M. and Khan F. A. and Jhanjhi N. Z.},
+  year = {2022},
+  title = {An enhanced Predictive heterogeneous ensemble model for breast cancer prediction},
+  journal = {Biomedical Signal Processing and Control},
+  volume = {72}
+}
+@article{carte3,
+    author = {Islam M. and Haque M. and Iqbal H. and Hasan M. and Hasan M. and Kabir M. N.},
+    year = {2020},
+    title = {Breast cancer prediction: a comparative study using machine learning techniques},
+    journal = {SN Computer Science},
+    volume = {1},
+    pages = {1-14}
+}
+@article{carte4,
+    author = {Amrane M. and Oukid S. and Gagaoua I. and Ensari T.},
+    year = {2018},
+    title = {Breast cancer classification using machine learning},
+    journal = {2018 electric electronics, computer science, biomedical engineerings' meeting (EBBT)},
+    pages = {1-4}
+}
+@book{carte5,
+    author = {Dhahri H. and Al Maghayreh E. and Mahmood A. and Elkilani W. and Faisal Nagi M. },
+    year = {2019},
+    title = {Automated breast cancer diagnosis based on machine learning algorithms},
+    publisher = {Journal of healthcare engineering}
+}
+@misc{link4,
+    key = {Z},
+    note = {\href{https://www.cancerimagingarchive.net/collection/breast-cancer-screening-dbt/}{https://www.cancerimagingarchive.net/collection/breast-cancer-screening-dbt/}}
+}
+@article{carte6,
+    author = {Varma D. R.},
+    year = {2012},
+    title = {Managing DICOM images: Tips and tricks for the radiologist},
+    journal = {Indian J Radiol Imaging},
+    volume = {22},
+    pages = {4-13}
+}
+@article{carte7,
+    author = {Buda M. and Saha A. and Walsh R. and Ghate S. and Li N. and Święcicki A. and Lo J. Y. and Mazurowski M. A.},
+    year = {2021},
+    title = {A Data Set and Deep Learning Algorithm for the Detection of Masses and Architectural Distortions in Digital Breast Tomosynthesis Images},
+    journal = {JAMA Netw Open},
+    volume = {4},
+}
+@misc{link5,
+    key = {Z},
+    note = {\href{https://github.com/mazurowski-lab/duke-dbt-data}{https://github.com/mazurowski-lab/duke-dbt-data}}
+}
+@article{carte8,
+    author = {Tan M. and Pang R. and Le Q. V.},
+    title = {Efficientdet: Scalable and efficient object detection},
+    journal = {Proceedings of the IEEE/CVF conference on computer vision and pattern recognition},
+    year = {2020},
+    pages = {0781-10790}
+}
+@article{carte9,
+    author = {Lu S. and Ding Y and Liu M. and Yin Z. and Yin L. and Zheng W.},
+    title = {Multiscale Feature Extraction and Fusion of Image and Text in VQA},
+    journal = {International Journal of Computational Intelligence Systems},
+    year = {2023},
+    volume = {16}
+}
+@article{carte10,
+    author = {Tan M. and Le Q. V.},
+    title = {EfficientNet: Rethinking Model Scaling for Convolutional Neural Networks},
+    journal = {International Conference on Machine Learning},
+    year = {2020}
+}

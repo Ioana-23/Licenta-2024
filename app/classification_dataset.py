@@ -39,7 +39,7 @@ class MyDataset(torch.utils.data.Dataset):
     def load_data(self):
         for idx in range(0, self.threshold):
             view_series = self.breastCancerData.iloc[idx]
-            image_path = find_image_path(view_series)
+            image_path = find_image_path(self.images_file, view_series)
             self.data_paths.append(image_path)
 
     def __len__(self):

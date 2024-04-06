@@ -91,8 +91,8 @@ def find_minimum_slices():
     print(max_number_of_slices)
 
 
-def find_image_path(view_series):
-    image_path = os.path.join("D:/Licenta/Proiect/data/images/", view_series["descriptive_path"])
+def find_image_path(base_folder, view_series):
+    image_path = os.path.join(base_folder, view_series["descriptive_path"])
     final_image = ""
     for i in range(0, len(image_path.split("-")) - 2):
         final_image = final_image + image_path.split("-")[i] + '-'
@@ -173,29 +173,34 @@ def verify_files():
         j = j + 1
 
 
-def save_slices_to_png(f_path, index):
-    image = np.array(dcmread_image(fp=os.path.join(f_path, "1-1.dcm"), view="rmlo"))
+def save_slices_to_png(f_path, dcm_path, index, number_of_slices):
+    image = np.array(dcmread_image(fp=os.path.join(dcm_path, "1-1.dcm"), view="rmlo"))
     image = image.astype(np.float32) * 255. / image.max()
     image = image.astype(np.uint8)
     if index == -1:
         index = image.shape[0] // 2
-    slices = image[index - 2: index + 3, :, 500:1890]
-    for i in range(5):
+    slices = image[index - number_of_slices // 2 - 1: index + number_of_slices // 2 - 1, :, :1890]
+    for i in range(number_of_slices):
         imsave(os.path.join(f_path, f"{i + 1}.png"), slices[i])
+    imsave(os.path.join(f_path, "0.png"), image[0, :, :1890])
 
 
 def save_all_slices(split_name):
-    base_folder = "D:/Licenta/Proiect/data/"
+    base_folder = "D:/Licenta/Project/app/data/"
     breast_cancer_data = pd.read_csv(os.path.join(base_folder, f"BCS-DBT file-paths-{split_name}.csv"))
     breast_cancer_boxes = pd.read_csv(os.path.join(base_folder,
                                                    f"bounding_boxes/BCS-DBT boxes-{split_name}.csv"))
     for idx in range(breast_cancer_data.shape[0]):
         view_series = breast_cancer_data.iloc[idx]
-        image_path = find_image_path(view_series)
+        image_path = find_image_path("D:/Licenta/Proiect/data/images/", view_series)
+        dcm_path = find_image_path(os.path.join(base_folder, "images"), view_series)
         patient_id = breast_cancer_data.iloc[idx]["PatientID"]
         index = breast_cancer_boxes.index[breast_cancer_boxes["PatientID"] == patient_id].tolist()
         slice_index = -1
         if len(index) != 0:
             slice_index = int(breast_cancer_boxes.iloc[index[0]]["Slice"])
-        save_slices_to_png(image_path, slice_index)
+        save_slices_to_png(image_path, dcm_path, slice_index, 2)
+
+
+save_all_slices("test")
 
