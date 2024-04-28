@@ -6,6 +6,20 @@
   <component name="ChangeListManager">
     <list default="true" id="5c86dd35-c6db-433c-aa11-c4532cb77630" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/classification_dataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/classification/classification_dataset.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/data/BCS-DBT file-paths-test-v2.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/data/BCS-DBT file-paths-train-v2.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/data/BCS-DBT file-paths-v2.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/data/labels/BCS-DBT labels-test-v2.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/data/labels/BCS-DBT labels-train-v2.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/data/labels/BCS-DBT labels-v2.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/duke_dbt_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/utils/duke_dbt_data.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/filterImages.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/model.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/readImages.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/run.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/app/classification/run.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/sort_split_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/utils/sort_split_data.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/train.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -15,10 +29,20 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="main" />
+        <entry key="$PROJECT_DIR$" value="feature/00" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitRewordedCommitMessages">
+    <option name="commitMessagesMapping">
+      <RewordedCommitMessageMapping>
+        <option name="originalMessage" value="Created empty initial folders" />
+        <option name="rewordedMessage" value="Added literature survey" />
+      </RewordedCommitMessageMapping>
+    </option>
+    <option name="currentCommit" value="1" />
+    <option name="onto" value="81946d3607e5417a97391f7dfdeeace38242ff1e" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -45,6 +69,41 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Licenta\Project\app" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Licenta\Project\app\utils" />
+      <recent name="D:\Licenta\Project\app\classification" />
+      <recent name="D:\Licenta\Project\app\data\images\tcia_files" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="readImages" type="PythonConfigurationType" factoryName="Python">
+      <module name="Project" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="C:\Users\baciu\AppData\Local\Programs\Python\Python39\python.exe" />
+      <option name="SDK_NAME" value="Python 3.9" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/app" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/app/readImages.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -57,10 +116,48 @@
       <workItem from="1696950364332" duration="1813000" />
       <workItem from="1697024371868" duration="11000" />
       <workItem from="1697720847197" duration="87000" />
+      <workItem from="1707996211377" duration="607000" />
+      <workItem from="1711308901383" duration="6145000" />
+      <workItem from="1711435291852" duration="45000" />
+      <workItem from="1712227050489" duration="7449000" />
+      <workItem from="1712315981963" duration="610000" />
+      <workItem from="1712430560230" duration="863000" />
+      <workItem from="1712561685561" duration="21000" />
+      <workItem from="1712585036667" duration="9730000" />
+      <workItem from="1712679861957" duration="1324000" />
+      <workItem from="1712905139982" duration="4446000" />
+      <workItem from="1713609983653" duration="1215000" />
+      <workItem from="1714295841874" duration="1109000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/app/classification/classification_dataset.py</url>
+          <line>114</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/Project$readImages.coverage" NAME="readImages Coverage Results" MODIFIED="1699378318787" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/app" />
+    <SUITE FILE_PATH="coverage/Project$sort_split_data.coverage" NAME="sort_split_data Coverage Results" MODIFIED="1712905413760" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/app" />
   </component>
 </project>
