@@ -7,9 +7,9 @@ from detection_dataset import DetectionDataset
 
 bs = 16
 
-train_dataset = DetectionDataset(base_folder="D:/Licenta/Proiect/data/", split_name="train", number_of_slices=22,
+train_dataset = DetectionDataset(base_folder="..\\data\\", split_name="train", number_of_slices=22,
                                  batch_size=bs)
-test_dataset = DetectionDataset(base_folder="D:/Licenta/Proiect/data/", split_name="test", number_of_slices=22,
+test_dataset = DetectionDataset(base_folder="..\\data\\", split_name="test", number_of_slices=22,
                                 batch_size=bs)
 
 

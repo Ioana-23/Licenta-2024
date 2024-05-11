@@ -5,12 +5,11 @@ from dataclasses import dataclass
 import gradio as gr
 import numpy as np
 import torch
-from skimage.io import imread
-from torch import nn
 import torchvision.transforms.functional as fn
 from effdet import get_efficientdet_config, EfficientDet, DetBenchPredict
-
 from ensemble_boxes import *
+from skimage.io import imread
+from torch import nn
 
 from app.utils.duke_dbt_data import draw_box
 
@@ -76,7 +75,7 @@ def preprocess_image(selected_image):
 
 
 def get_label(selected_image):
-    for root, dirs, files in os.walk("D:\Licenta\GUI\images"):
+    for root, dirs, files in os.walk(".\\images"):
         for file in files:
             if file.endswith(".png"):
                 image_path = os.path.join(root, file)
@@ -143,7 +142,7 @@ def image_classifier(selected_image):
                     width = boxes[0][2] - x
                     height = boxes[0][3] - y
 
-                    label = int(labels[0]) + 1
+                    label_aux = int(labels[0]) + 1
                     selected_image = torch.tensor(selected_image).permute(2, 0, 1)
                     new_image = draw_box(image=np.array(selected_image[0]), x=int(x), y=int(y),
                                          width=int(width), height=int(height), lw=2)
@@ -152,16 +151,16 @@ def image_classifier(selected_image):
                                                   output_1[0][0].unsqueeze(dim=0)[:, 1]), dim=-1))
         confidences = {'normal': float(probabilities_1[0]),
                        'actionable': float(probabilities_1[1]),
-                       'cancer': float(probabilities_1[1])}
+                       CLASSES[label_aux]: float(probabilities_1[1])}
     else:
         confidences = {'normal': float(probabilities_2[0]),
                        'actionable': float(probabilities_2[1]),
-                       'cancer': float(probabilities_2[2])}
+                       CLASSES[label_aux]: float(probabilities_2[2])}
     return confidences, CLASSES[label], new_image
 
 
 example_images = []
-for root, dirs, files in os.walk("D:\\Licenta\\GUI\\images"):
+for root, dirs, files in os.walk(".\\images"):
     for file in files:
         if file.endswith(".png"):
             image_path = os.path.join(root, file)

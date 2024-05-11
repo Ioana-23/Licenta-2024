@@ -12,12 +12,12 @@ from skimage.io import imsave
 
 # Splits all the data into train and test data with a 80% and 20% spread
 def split_data():
-    df = pd.read_csv("D:/Licenta/Proiect/data/BCS-DBT file-paths-all.csv")
-    df_test = pd.read_csv("D:/Licenta/Proiect/data/BCS-DBT file-paths-all.csv")
-    df_label_train = pd.read_csv("D:/Licenta/Proiect/data/labels/BCS-DBT labels-all.csv")
-    df_label_test = pd.read_csv("D:/Licenta/Proiect/data/labels/BCS-DBT labels-all.csv")
-    df_boxes_train = pd.read_csv("D:/Licenta/Proiect/data/bounding_boxes/BCS-DBT boxes-all.csv")
-    df_boxes_test = pd.read_csv("D:/Licenta/Proiect/data/bounding_boxes/BCS-DBT boxes-all.csv")
+    df = pd.read_csv("..\\data\\BCS-DBT file-paths-all.csv")
+    df_test = pd.read_csv("..\\data\\BCS-DBT file-paths-all.csv")
+    df_label_train = pd.read_csv("..\\data\\labels\\BCS-DBT labels-all.csv")
+    df_label_test = pd.read_csv("..\\data\\labels\\BCS-DBT labels-all.csv")
+    df_boxes_train = pd.read_csv("..\\data\\bounding_boxes\\BCS-DBT boxes-all.csv")
+    df_boxes_test = pd.read_csv("..\\data\\bounding_boxes\\BCS-DBT boxes-all.csv")
     threshold = df.shape[0]
     train_test_proportion = 0.8
     index_aux_train = 0
@@ -44,22 +44,22 @@ def split_data():
         index_aux_train = index_aux_train + 1
     df.to_csv("BCS-DBT file-paths-train.csv", index=False)
     df_test.to_csv("BCS-DBT file-paths-test.csv", index=False)
-    df_label_train.to_csv("labels/BCS-DBT labels-train.csv", index=False)
-    df_label_test.to_csv("labels/BCS-DBT labels-test.csv", index=False)
-    df_boxes_train.to_csv("bounding_boxes/BCS-DBT boxes-train.csv", index=False)
-    df_boxes_test.to_csv("bounding_boxes/BCS-DBT boxes-test.csv", index=False)
+    df_label_train.to_csv("labels\\BCS-DBT labels-train.csv", index=False)
+    df_label_test.to_csv("labels\\BCS-DBT labels-test.csv", index=False)
+    df_boxes_train.to_csv("bounding_boxes\\BCS-DBT boxes-train.csv", index=False)
+    df_boxes_test.to_csv("bounding_boxes\\BCS-DBT boxes-test.csv", index=False)
 
 
 # Iterates through the image directory and deletes all the scans not made from the 'rmlo' position
 # Deletes only the images, not the rows in which the images were found
 def keep_rmlo_views():
-    df = pd.read_csv("D:/Licenta/Proiect/data/BCS-DBT file-paths-all.csv")
+    df = pd.read_csv("..\\data\\BCS-DBT file-paths-all.csv")
     for study in df.iloc:
         view_series = study
         view = view_series["View"]
         if view != "rmlo":
             image_path = find_image_path(view_series)
-            dir_path = "D:/Licenta/Proiect/data/images"
+            dir_path = "..\\data\\images"
             for i in range(5, 9):
                 dir_path = dir_path + "/" + image_path.split("/")[i]
             if os.path.exists(image_path):
@@ -75,7 +75,7 @@ def keep_rmlo_views():
 
 # Iterates through all the images and finds the minimum number of slices across all scans
 def find_minimum_slices():
-    breast_cancer_data = pd.read_csv("D:/Licenta/Proiect/data/BCS-DBT file-paths-all.csv")
+    breast_cancer_data = pd.read_csv("..\\data\\BCS-DBT file-paths-all.csv")
     threshold = breast_cancer_data.shape[0]
     max_number_of_slices = 22
     for i in range(722, threshold):
@@ -107,7 +107,7 @@ def find_image_path(base_folder, view_series):
 
 # Sorts the .csv files after PatientID and StudyUID
 def sort_files(filename):
-    df = pd.read_csv(f"D:/Licenta/Proiect/data/bounding_boxes/{filename}.csv")
+    df = pd.read_csv(f"..\\data\\bounding_boxes\\{filename}.csv")
     df.sort_values(["PatientID", "StudyUID"], axis=0, ascending=[True, True], inplace=True)
     df.to_csv(f"{filename}.csv", index=False)
 
@@ -115,10 +115,10 @@ def sort_files(filename):
 # Deletes the images that do not correspond between what is in the subdirectories and
 # what is in the true label file
 def remove_surplus_images():
-    dir_path = "D:/Licenta/Proiect/data/images/Breast-Cancer-Screening-DBT"
+    dir_path = "..\\data\\images\\Breast-Cancer-Screening-DBT"
     dir_list = os.listdir(dir_path)
-    file = pd.read_csv("../Project/app/data/labels/BCS-DBT labels-all.csv")
-    for directory in dir_list:
+    file = pd.read_csv("..\\data\\labels\\BCS-DBT labels-all.csv")
+    for directory in dir_list[:-1]:
         if directory in file["PatientID"].tolist():
             directory_list = os.listdir(os.path.join(dir_path, directory))
             for sub_directory in directory_list:
@@ -131,8 +131,8 @@ def remove_surplus_images():
 
 # Deletes the rows that do not correspond between the file_path and the true label files
 def get_appropriate_studies():
-    df_label, df_file_path = pd.read_csv("D:/Licenta/Proiect/data/labels/BCS-DBT labels-all.csv"), \
-        pd.read_csv("D:/Licenta/Proiect/data/BCS-DBT file-paths-all.csv")
+    df_label, df_file_path = pd.read_csv("..\\data\\labels\\BCS-DBT labels-all.csv"), \
+        pd.read_csv("..\\data\\BCS-DBT file-paths-all.csv")
     index = -1
     for i in range(0, df_file_path.shape[0]):
         index = index + 1
@@ -148,14 +148,14 @@ def get_appropriate_studies():
             else:
                 df_file_path.drop(i, axis=0, inplace=True)
                 index = index - 1
-    df_file_path.to_csv("D:/Licenta/Proiect/data/BCS-DBT file-paths-all.csv", index=False)
+    df_file_path.to_csv("..\\data\\BCS-DBT file-paths-all.csv", index=False)
 
 
 # Verifies that the contents of the file_path and true label files are the same,
 # printing "Problem" if the other fits
 def verify_files():
-    df_label = pd.read_csv("../Project/app/data/labels/BCS-DBT labels-all.csv")
-    dir_path = "D:/Licenta/Proiect/data/images/Breast-Cancer-Screening-DBT"
+    df_label = pd.read_csv("..\\data\\labels\\BCS-DBT labels-all.csv")
+    dir_path = "..\\data\\images\\Breast-Cancer-Screening-DBT"
     dir_list = os.listdir(dir_path)
     i, j = 0, 0
     while i < df_label.shape[0] or j < len(dir_list) - 1:
@@ -200,13 +200,13 @@ def save_slices_to_png(f_path, dcm_path, index, number_of_slices):
 
 
 def save_all_slices(split_name):
-    base_folder = "D:/Licenta/Project/app/data/"
+    base_folder = "..\\data\\"
     breast_cancer_data = pd.read_csv(os.path.join(base_folder, f"BCS-DBT file-paths-{split_name}.csv"))
     breast_cancer_boxes = pd.read_csv(os.path.join(base_folder,
-                                                   f"bounding_boxes/BCS-DBT boxes-{split_name}.csv"))
+                                                   f"bounding_boxes\\BCS-DBT boxes-{split_name}.csv"))
     for idx in range(breast_cancer_data.shape[0]):
         view_series = breast_cancer_data.iloc[idx]
-        image_path = find_image_path("D:/Licenta/Proiect/data/images/", view_series)
+        image_path = find_image_path("..\\data\\images\\", view_series)
         dcm_path = find_image_path(os.path.join(base_folder, "images"), view_series)
         patient_id = breast_cancer_data.iloc[idx]["PatientID"]
         index = breast_cancer_boxes.index[breast_cancer_boxes["PatientID"] == patient_id].tolist()
@@ -216,5 +216,6 @@ def save_all_slices(split_name):
         save_slices_to_png(image_path, dcm_path, slice_index, 22)
 
 
-save_all_slices("all")
+remove_surplus_images()
+verify_files()
 
