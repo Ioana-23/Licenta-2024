@@ -81,7 +81,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="feature/02" />
+        <entry key="$PROJECT_DIR$" value="feature/03" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -213,7 +213,7 @@
       <workItem from="1712905139982" duration="4446000" />
       <workItem from="1713609983653" duration="1215000" />
       <workItem from="1714295841874" duration="3251000" />
-      <workItem from="1715427195785" duration="1865000" />
+      <workItem from="1715427195785" duration="2678000" />
     </task>
     <servers />
   </component>
