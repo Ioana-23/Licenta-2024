@@ -1,0 +1,49 @@
+\chapter{Methods used in detecting breast cancer}
+\label{chap:ch4}
+\section{Database used}
+
+The purpose of this thesis is to test the accuracy and precision resulting from training a GoogLeNet model on the Breast-Cancer-Screening-DBT database~\cite{link4}. From this database, only a part of the data has been selected for training and validation. Thus, the database I will be working on contains 719 screenings, of which 350 don't present any cancer, 280 have actionable skin neoplasms, 42 have benign tumors and 47 show signs of malignant cancerous tumors.\\
+The Cancer Imaging Archive site provides a download link to a .tcia file that contains the screening files, which can be further downloaded using the NBIA Data Retriever. The images come in the form of dcm files, which are DICOM files known in the medical forum, the abbreviation coming from Digital Imaging and Communications in Medicine.
+This format is different from other image formats because the information is grouped into data sets. For the sake of the patient's confidentiality, all sensitive information regarding the patient is removed before making the DICOM file available to the public.~\cite{carte6}.\\
+Also from the Cancer Imaging Archive website, files containing file paths, ground truth labels and bounding boxes can be accessed.~\cite{carte7}. For reading the images from the dcm files, a github repository has been provided by the publishers of the database.~\cite{link5}
+
+\section{GoogLeNet Architecture}
+
+\section{EfficientDet Architecture}
+
+The EfficientDet model is a new family of object detectors based on two main optimizations, those being efficient multi-scale feature fusion and model scaling. Along with those optimizations, different models have been tested to serve as the backbone of the model, and for this particular model, EfficientNet has proven to be a sufficient backbone architecture.~\cite{carte8}\\
+The first challenge of this model was feature fusion, a concept introduced to aid convolutional neural networks in identifying objects from images when the objects' sizes are either too small or exceed the convolutional kernel's receptive field.~\cite{carte9}. It has been discovered that changing the resolution of the image solved the sensitivity that neural networks have to the images' size, to some extent, as shown in figure \ref{fig:fig4}\\
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.7\textwidth]{figures/Figure4.png}
+    \caption{Pattern diagram of image pyramid}
+    \label{fig:fig4}
+\end{figure}
+The problem with this discovery was that the cost of system storage for creating a pyramid of the same image in different resolutions and computational resources are too harsh, therefore deeming this method rarely usable. Because each resolution had its advantages, a way to combine features from high-resolution features of shallow networks with the high-level semantic information of high-level network features was researched. Thus, the FPN, or Feature Pyramid Network, has been used to extract from deep-layer networks and get the same features as the shallow-layer features by up-sampling, as shown in figure \ref{fig:fig5}\\ 
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.7\linewidth]{figures/Figure5.png}
+    \caption{Pattern diagram of feature pyramid network}
+    \label{fig:fig5}
+\end{figure}
+In this particular model, a BiPFN has been introduced, Bi-directional FPN, which utilizes learnable weights to learn the importance of different input features from different resolutions.\\
+The second challenge is model-scaling. This method was popularized in \cite{carte10}, and is used to uniformly scale all dimensions of depth, width and resolution using a compound coefficient. This scaling method, called compound scaling, is looking at how the different dimensions interact with each other and scales them accordingly. For the EfficientDet architecture, this scaling method is used to scale up resolution, width and depth for all layers of the backbone, BiFPN and the bounding boxes and classification network.\\
+Finally, for the backbone, EfficientNet has been observed to achieve better accuracy than other previously used backbones. ~\cite{carte8}
+% \subsubsection{Bi-directional Feature Pyramid Network}
+The baseline strategy for a standard FPN is to aggregate the features from the different levels of resolution in a top-down manner, from the features of the image with the lowest resolution to the ones from the highest one. For example, if a feature is extracted from the lowest resolution image, that feature is passed through a convolutional layer, used for feature processing, and the resulting output is then resized, which could be upsampling or downsampling in order to match the resolution of the following feature and so on.~\cite{carte8}.\\
+The conventional FPN is, however, limited by the one-directional feature flow. To correct this use, PANet, or Path Aggregation Network, is introduced and adds a path going bottom-up. These methods are still not ideal because of the cost of computations and parameters needed. The strategy proposed in \cite{carte8} says that nodes that have only one edge going into them should be removed because the lack of multiple input edges corresponds to less contribution to the overall feature network as it does not involve feature fusion. Moreover, between every input and output node at the same level, there are edges added in order to add more feature fusion without much cost, as it is on the same level. Finally, each bidirectional path is treated as one singular layer and more layers are involved in order to achieve more high-level feature fusion, as shown in figure \ref{fig:fig6}.\\
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=1\textwidth]{figures/Figure6.png}
+    \caption{(a)-Conventional FPN; (b)-PANet; (c)-BiFPN}
+    \label{fig:fig6}
+\end{figure}
+In addition to the bidirectional cross-scale connections, the EfficientDet model takes into consideration the importance of the different features at different resolutions that can impact the predictions. Therefore, it implements a weighted feature fusion, or more precisely, a fast normalized fusion, that does not affect the performance of the GPU while also maintaining training stability.~\cite{carte8}\\
+% \subsubsection{Conclusion}
+Thus, the EfficientDet model combines all these concepts into a singular network, using ImageNet pretrained weights for the EfficientNet model, the BiFPN levels, that take the features from levels 3 to 7 from the backbone and applies feature fusion. In the end, these features are sent to a classification head and a regression head to both classify the objects detected and provide bounding boxes for them. Below is shown the EfficientDet architecture \ref{fig:fig7}\\
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=1\textwidth]{figures/Figure7.jpg}
+    \caption{EfficientDet architecture}
+    \label{fig:fig7}
+\end{figure}

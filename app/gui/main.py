@@ -175,7 +175,7 @@ with gr.Blocks(theme='xiaobaiyuan/theme_brief') as demo:
     with gr.Row():
         with gr.Column():
             with gr.Row():
-                img = gr.Image(width=512, height=512)
+                img = gr.Image(width=512, height=512, show_download_button=True)
             with gr.Row():
                 btn_clear = gr.Button("Clear")
                 btn_submit = gr.Button("Submit")

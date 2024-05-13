@@ -10,15 +10,6 @@ from app.utils.sort_split_data import find_image_path
 
 def get_train_transforms():
     return A.Compose([
-        A.OneOf([
-            A.HueSaturationValue(hue_shift_limit=0.2, sat_shift_limit=0.2,
-                                 val_shift_limit=0.2, p=0.9),
-            A.RandomBrightnessContrast(brightness_limit=0.2,
-                                       contrast_limit=0.2, p=0.9),
-        ], p=0.9),
-        A.ToGray(p=0.01),
-        A.HorizontalFlip(p=0.5),
-        A.VerticalFlip(p=0.5),
     ],
         p=1.0,
         bbox_params=A.BboxParams(

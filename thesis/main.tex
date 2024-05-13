@@ -1,0 +1,58 @@
+\documentclass[12pt]{report} 
+
+\usepackage[language=english, type=bachelor]{style}
+\usepackage{subfigure}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{}
+\chead{}
+\renewcommand{\headrulewidth}{0.2pt}
+\renewcommand{\footrulewidth}{0.2pt}
+
+\begin{document}
+
+\specialization{[Sec\c tie]}	
+\title{[Titlu lucrare]}					   
+\author{[Baciu Ioana]}											
+\supervisor{[Grad, titlu si nume coordonator]}				
+				
+\maketitle
+
+
+\newpage
+\thispagestyle{empty}
+\mbox{}
+\newpage
+\pagenumbering{roman} 
+
+\cleardoublepage
+ABSTRACT
+\vspace{0.5cm}	
+\hrule
+\vspace{0.5cm}	
+
+Abstract: un rezumat \^{i}n limba englez\u{a} cu prezentarea, pe scurt, a con\c{t}inutului pe capitole, pun\^{a}nd accent pe contribu\c{t}iile proprii \c{s}i originalitate
+
+
+
+\tableofcontents
+
+
+\newpage
+\pagenumbering{arabic}
+
+\input{chapters/chapter1}
+
+\input{chapters/chapter2}
+\input{chapters/chapter3}
+\input{chapters/chapter4}
+
+\input{chapters/chapter5}
+
+\input{chapters/chapter6}
+\input{chapters/chapter7}
+
+
+\bibliography{references}
+
+\end{document}
