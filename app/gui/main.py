@@ -2,6 +2,7 @@ import os
 import random
 from dataclasses import dataclass
 
+import cv2
 import gradio as gr
 import numpy as np
 import torch
@@ -11,9 +12,9 @@ from ensemble_boxes import *
 from skimage.io import imread
 from torch import nn
 
-from app.utils.duke_dbt_data import draw_box
+from app.system_utils.duke_dbt_data import draw_box
 
-CLASSES = ['normal', 'actionable', 'benign', 'malign', 'unknown']
+CLASSES = ['normal', 'cancer', 'benign', 'malign', 'unknown']
 
 mean = [0.485, 0.456, 0.406]
 std = [0.229, 0.224, 0.225]
@@ -58,14 +59,15 @@ model_1 = load_model('..\\classification\\checkpoints\\model_1.pth')
 model_1 = torch.jit.script(model_1)
 model_1.eval()
 
-model_2 = load_model('..\\classification\\checkpoints\\epoch_0_model_2.pth')
-model_2 = torch.jit.script(model_2)
-model_2.eval()
+# model_2 = load_model('..\\classification\\checkpoints\\epoch_0_model_2.pth')
+# model_2 = torch.jit.script(model_2)
+# model_2.eval()
 
 model_3 = load_net("..\\detection\\checkpoints\\model_3.pth")
 
 
 def preprocess_image(selected_image):
+    selected_image = cv2.resize(selected_image, (512, 512))
     selected_image = np.moveaxis(selected_image, -1, 0)
     slices = np.empty(shape=[1, 3, 512, 512], dtype=np.float32)
     slices[0] = selected_image / 255.0
@@ -124,38 +126,30 @@ def image_classifier(selected_image):
     with torch.no_grad():
         output_1 = model_1(slices)
     probabilities_1 = nn.Sigmoid()(output_1[0])[0]
-    class_predicted_1 = 1
+    class_predicted_1 = np.argmax(probabilities_1).item()
     if class_predicted_1 == 1:
         with torch.no_grad():
-            output_2 = model_2(slices)
-            probabilities_2 = nn.Softmax()(torch.cat((output_1[0][0].unsqueeze(dim=0)[:, 0], output_2[0][0]), dim=-1))
-            # class_predicted_2 = np.argmax(probabilities_2)
-            class_predicted_2 = 1
-            if class_predicted_2 == 1:
-                with torch.no_grad():
-                    predictions = make_predictions(slices)
-                    i = 0
-                    boxes, scores, labels = run_wbf(predictions, image_index=i)
+            predictions = make_predictions(slices)
+            i = 0
+            boxes, scores, labels = run_wbf(predictions, image_index=i)
 
-                    x = boxes[0][0]
-                    y = boxes[0][1]
-                    width = boxes[0][2] - x
-                    height = boxes[0][3] - y
+            x = boxes[0][0]
+            y = boxes[0][1]
+            width = boxes[0][2] - x
+            height = boxes[0][3] - y
 
-                    label_aux = int(labels[0]) + 1
-                    selected_image = torch.tensor(selected_image).permute(2, 0, 1)
-                    new_image = draw_box(image=np.array(selected_image[0]), x=int(x), y=int(y),
-                                         width=int(width), height=int(height), lw=2)
+            label_aux = int(labels[0]) + 1
+            selected_image = torch.tensor(selected_image).permute(2, 0, 1)
+            new_image = draw_box(image=np.array(selected_image[0]), x=int(x), y=int(y),
+                                 width=int(width), height=int(height), lw=2)
     if class_predicted_1 == 0:
         probabilities_1 = nn.Softmax()(torch.cat((output_1[0][0].unsqueeze(dim=0)[:, 0:][0],
                                                   output_1[0][0].unsqueeze(dim=0)[:, 1]), dim=-1))
         confidences = {'normal': float(probabilities_1[0]),
-                       'actionable': float(probabilities_1[1]),
                        CLASSES[label_aux]: float(probabilities_1[1])}
     else:
-        confidences = {'normal': float(probabilities_2[0]),
-                       'actionable': float(probabilities_2[1]),
-                       CLASSES[label_aux]: float(probabilities_2[2])}
+        confidences = {'normal': float(probabilities_1[0].item()),
+                       CLASSES[label_aux]: float(probabilities_1[1].item())}
     return confidences, CLASSES[label], new_image
 
 
@@ -183,7 +177,7 @@ with gr.Blocks(theme='xiaobaiyuan/theme_brief') as demo:
             with gr.Row():
                 examples = gr.Examples(examples=example_images, inputs=img, examples_per_page=14)
             with gr.Row():
-                label_predicted = gr.Label(num_top_classes=4, label="Predicted")
+                label_predicted = gr.Label(num_top_classes=2, label="Predicted")
             with gr.Row():
                 label_true = gr.Textbox(label="True label")
         btn_submit.click(image_classifier, inputs=img, outputs=[label_predicted, label_true, img])

@@ -4,7 +4,7 @@ import pandas as pd
 import torch.utils.data
 from skimage.io import imread
 import torchvision.transforms.functional as fn
-from app.utils.sort_split_data import find_image_path
+from system_utils.sort_split_data import find_image_path
 
 
 def get_nth_file_name(directory, n):
