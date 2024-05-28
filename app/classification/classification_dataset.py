@@ -31,7 +31,6 @@ class ClassificationDataset(torch.utils.data.Dataset):
     def __init__(self, base_folder, split_name, number_of_slices, batch_size, label_min=0,
                  threshold=None):
         super().__init__()
-        self.label_min = label_min
         self.batch_size = batch_size
         self.base_folder = base_folder
         self.number_of_slices = number_of_slices
@@ -70,9 +69,7 @@ class ClassificationDataset(torch.utils.data.Dataset):
         for idx in range(0, self.threshold):
             view_series = self.breastCancerData.iloc[idx]
             label = np.argmax(self.breastCancerLabel.iloc[idx][3:].values)
-            if label < self.label_min:
-                continue
-            if label != self.label_min:
+            if label != 0:
                 label = 1
             else:
                 label = 0
@@ -135,7 +132,7 @@ class ClassificationDataset(torch.utils.data.Dataset):
 
     def load_label(self, idx):
         array = np.array(self.breastCancerLabel.iloc[idx][3:].values, dtype=np.float32)
-        if array[self.label_min] != 1:
+        if array[0] != 1:
             return np.array((0, 1))
         return np.array((1, 0))
 

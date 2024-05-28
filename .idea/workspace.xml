@@ -7,7 +7,6 @@
     <list default="true" id="5c86dd35-c6db-433c-aa11-c4532cb77630" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/classification/classification_dataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/classification/classification_dataset.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/detection/detection_dataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/detection/detection_dataset.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -166,7 +165,8 @@
       <workItem from="1715954363984" duration="96000" />
       <workItem from="1716645230059" duration="652000" />
       <workItem from="1716645895181" duration="815000" />
-      <workItem from="1716807639162" duration="1229000" />
+      <workItem from="1716807639162" duration="6236000" />
+      <workItem from="1716903405748" duration="9000" />
     </task>
     <servers />
   </component>
@@ -189,12 +189,12 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/app/classification/classification_dataset.py</url>
-          <line>114</line>
+          <line>111</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/app/classification/classification_dataset.py</url>
-          <line>145</line>
+          <line>142</line>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
