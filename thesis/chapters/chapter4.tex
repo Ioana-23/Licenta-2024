@@ -6,9 +6,12 @@ The figure \ref{fig:fig33} bellow shows the pipeline of the system and how the i
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\linewidth]{figures/Figure38.png}
-    \caption{System flow}
+    \caption{System flow
+    \textcolor{green}{logica diagramei e ok, dar oare nu se pot include niste imagini in chenare a.i. sa se observe mai usor exemplele normale vs cele maligne/benigne?}
+    }
     \label{fig:fig33}
 \end{figure}
+
 
 \section{Databases used in detecting breast cancer}
 
@@ -52,7 +55,7 @@ Also from the Cancer Imaging Archive website, files containing file paths, groun
 
 The process of defining and training both the classification model and the detection model started with gathering the data and learning how to work with dcm files because this was the first time I had an encounter with them. I quickly discovered that reading the images from the dcm files took a lot of time, which meant that training the models would also take a lot of time. These files contained the pixel data of about 50 slices, some had more and some had less, each representing images of width 2457 and height 1890, or 1996. I searched for ways to reduce the time for reading the files, at first by saving the slices as numpy arrays in file format, but that proved to not be ideal because it occupied a lot of disk storage. The dcm files themselves were not light either, totaling 120 GB of memory on my laptop, but the numpy arrays would have been impossible to store. Then, I arrived at the solution that, in time, proved to be the best: to save each individual slice as a png file. This meant that the time for reading the images was much faster, reading from dcm compared to png, and also that disk space was better utilized.
 
-In ~\cite{carte8} it is said that the input images for the object detection model should have a size divisible by 128, which I was not aware of when training the classification model, for which the images were not resized at all. For the images of size \(2457x1996=4,904,172\) I clipped the images to still have a height of 1890. I was training images of sizes \(2457x1890=4,643,730\) on the GoogleNet model, but only taking a maximum of 5 slices from each image. After processing the dcm files, I found out that the lowest number of slices for an image in my entire subsection of the database was 22 therefore, for the purpose of properly balancing the database, I took into consideration only 22 slices of each image. 
+In ~\cite{carte8} it is said that the input images for the object detection model should have a size divisible by 128, which I was not aware of when training the classification model, for which the images were not resized at all. For the images of size 2457$\times$1996=4,904,172 I clipped the images to still have a height of 1890. I was training images of sizes 2457$\times$1890=4,643,730 on the GoogleNet model, but only taking a maximum of 5 slices from each image. After processing the dcm files, I found out that the lowest number of slices for an image in my entire subsection of the database was 22 therefore, for the purpose of properly balancing the database, I took into consideration only 22 slices of each image. 
  
 For the images that had cancer, the ones that I had a file of bounding boxes on, I took the slice that had the tumor, 10 slices before that, and 11 after.
 
@@ -78,7 +81,7 @@ The batch size was 10, and the images were not resized, so I was training images
     Benign & 32 & 10\\ \hline
     Cancer & 42 & 5\\ \hline
     \end{tabular}
-    \caption{Experiment 1 distribution}
+    \caption{Experiment 1 --- data distribution}
     \label{tab:tab1}
 \end{table}
 
@@ -159,7 +162,7 @@ For the next experiment, I stopped considering this a problem of 4-label detecti
     Normal & 273 & 77\\ \hline
     Cancer & 295 & 74\\ \hline
     \end{tabular}
-    \caption{Experiment 4 distribution}
+    \caption{Experiment 4 --- data distribution}
     \label{tab:tab2}
 \end{table}
 
@@ -358,7 +361,7 @@ Tables \ref{tab:tab4}, \ref{tab:tab5} and \ref{tab:tab6} shows the conclusions o
 
 After classifying the images into those with cancer and without, I wanted to see I could use a model to detect exactly where the tumor is thought to be. In doing so, I trained the model only on the images containing tumors.
 
-The database selected is the same one as the one for the classification problem, the WDBC dataset, from which I selected only the ones representing beingn and malign images. Table \ref{tab:tab6} shows the distribution and size of the train and test data for the detection problem.
+The database selected is the same one as the one for the classification problem, the WDBC dataset, from which I selected only the ones representing benign and malign images. Table \ref{tab:tab6} shows the distribution and size of the train and test data for the detection problem.
 
 \begin{table}[ht!]
 \centering
