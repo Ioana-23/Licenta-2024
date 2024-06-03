@@ -12,7 +12,7 @@ from ensemble_boxes import *
 from skimage.io import imread
 from torch import nn
 
-from app.system_utils.duke_dbt_data import draw_box
+from system_utils.duke_dbt_data import draw_box
 
 CLASSES = ['normal', 'cancer', 'benign', 'malign', 'unknown']
 
@@ -143,10 +143,8 @@ def image_classifier(selected_image):
             new_image = draw_box(image=np.array(selected_image[0]), x=int(x), y=int(y),
                                  width=int(width), height=int(height), lw=2)
     if class_predicted_1 == 0:
-        probabilities_1 = nn.Softmax()(torch.cat((output_1[0][0].unsqueeze(dim=0)[:, 0:][0],
-                                                  output_1[0][0].unsqueeze(dim=0)[:, 1]), dim=-1))
-        confidences = {'normal': float(probabilities_1[0]),
-                       CLASSES[label_aux]: float(probabilities_1[1])}
+        confidences = {'cancer': float(probabilities_1[1]),
+                       'normal': float(probabilities_1[0])}
     else:
         confidences = {'normal': float(probabilities_1[0].item()),
                        CLASSES[label_aux]: float(probabilities_1[1].item())}

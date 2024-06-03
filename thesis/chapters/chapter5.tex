@@ -1,7 +1,6 @@
-\chapter[Intelligent System]{"Deep Learning Techniques for Breast Cancer Detection: A Comparative Study of GoogLeNet and EfficientDet in 3D Imaging" System Interface}
+\chapter{MammoDetect System}
 \label{chap:ch5}
 
-\textcolor{green}{ar fi util ca aplicatia ta sa aiba un nume dragutz si atunci capitolul sa se numeasca "AppName system"}
 \section{Functionalities}
 The system consists of two main functionalities: selecting an image, either from the array of examples provided in the top right corner of the interface, or the upload button which opens the computer's internal storage. Upon selecting an image, it will be viewed in the main window. The image selected does not necessarily have to be 512$\times$512, because it will be resized anyway. The user then has the choice of either selecting another image or submitting the image to the model to be classified into normal and cancerous, the latter being then sent to the detection model to replace the image in the main window with the same image that has drawn the bounding box resulted from passing the image to the model. 
 
@@ -55,12 +54,10 @@ Then, I experimented with the gradio Blocks method and I also chose a theme to g
     \label{fig:fig37}
 \end{figure}
 
-The models' architecture used was the one in the Torch library. I implemented my one datasets for both the classification and detection problems, that inherit methods from \(torch.utlis.data.Dataset\). The order of the inputs so that each batch is balanced is determined directly in the dataset classes, so the \(torch.utils.data.DataLoader\) does not take any sampler classes as input, instead setting the \(shuffle\) attribute to False. The batch size is sent to both the DataLoader and Dataset classes.
+The models' architecture used was the one in the Torch library. I implemented my one datasets for both the classification and detection problems, that inherit methods from $torch.utlis.data.Dataset$. The order of the inputs so that each batch is balanced is determined directly in the dataset classes, so the $torch.utils.data.DataLoader$ does not take any sampler classes as input, instead setting the $shuffle$ attribute to False. The batch size is sent to both the DataLoader and Dataset classes.
 
 \section{Testing and validation}
 
-\textcolor{red}{ar fi bine ca acest capitol sa aiba urm structura:\\
-1. fc-nalitati (e.g. load image and detect lessions)\\
-2. design (info despre use-case(s), diagrama de arhitectura a app, diagrama de concepte/clase, diagr de secventa)\\
-3. implementation (e.g. libraries used,technologies, languages, etc)\\
-4. testing and validation (e.g. how you tested the app, some code assertions - it's ok for simple code, not for AI code)\\}
+In order to make sure that the system behavied accordingly, I tested the function \textit{find\_image\_path} from the directory \textit{utils}, used in the $\_\_getitem()\_\_$ function in both datasets. This method is supposed to remove the name of the file at the end of a long string representing the path to the dcm files and adds the string "NA-" in the last directory name after the "-". The reason for this method existing is that the png images are saved in directories with the name exactly as the dcm files. Also, the name of the files contain the string mentioned before, this might be because I downloaded the dcm files before the latest update of the dataset, which was in January 2024.
+
+For testing this method I used some simply assertions to make sure that the function is fulfilling its intended use.

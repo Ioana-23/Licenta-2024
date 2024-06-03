@@ -5,7 +5,7 @@ import torch.utils.data
 from skimage.io import imread
 import torchvision.transforms.functional as fn
 import albumentations as A
-from app.system_utils.sort_split_data import find_image_path
+from system_utils.sort_split_data import find_image_path
 
 
 def get_train_transforms():

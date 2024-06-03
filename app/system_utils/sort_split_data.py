@@ -58,8 +58,8 @@ def keep_rmlo_views():
         view_series = study
         view = view_series["View"]
         if view != "rmlo":
-            image_path = find_image_path(view_series)
             dir_path = "..\\data\\images"
+            image_path = find_image_path(view_series, dir_path)
             for i in range(5, 9):
                 dir_path = dir_path + "/" + image_path.split("/")[i]
             if os.path.exists(image_path):
@@ -102,7 +102,7 @@ def find_image_path(base_folder, view_series):
     for i in range(len(image_path.split("-")) - 2, len(image_path.split("-"))):
         final_image = final_image + "-" + image_path.split("-")[i]
     image_path = final_image
-    return image_path[:image_path.rindex("/")+1]
+    return image_path[:image_path.rindex("/") + 1]
 
 
 # Sorts the .csv files after PatientID and StudyUID
@@ -152,7 +152,7 @@ def get_appropriate_studies():
 
 
 # Verifies that the contents of the file_path and true label files are the same,
-# printing "Problem" if the other fits
+# returning "Problem" if the other fits
 def verify_files():
     df_label = pd.read_csv("..\\data\\labels\\BCS-DBT labels-all.csv")
     dir_path = "..\\data\\images\\Breast-Cancer-Screening-DBT"
@@ -166,13 +166,12 @@ def verify_files():
             for directory in directories:
                 study_id = df_label.iloc[i_copy]["StudyUID"]
                 if study_id[3:] != directory.split("DBT")[1][:7]:
-                    print("Problem")
+                    return "Problem"
                 i_copy = i_copy + 1
             i = i + len(directories) - 1
-        else:
-            print("Here")
         i = i + 1
         j = j + 1
+    return "All good"
 
 
 def save_slices_to_png(f_path, dcm_path, index, number_of_slices):
@@ -196,7 +195,7 @@ def save_slices_to_png(f_path, dcm_path, index, number_of_slices):
         new_image = cv2.resize(slices[i], (512, 512))
         imsave(os.path.join(f_path, f"{min_lim + i}.png"), new_image)
     open(os.path.join(f_path, f"{image.shape}.txt"), 'a')
-    #imsave(os.path.join(f_path, "0.png"), image[0, :, :1890])
+    # imsave(os.path.join(f_path, "0.png"), image[0, :, :1890])
 
 
 def save_all_slices(split_name):
@@ -216,6 +215,33 @@ def save_all_slices(split_name):
         save_slices_to_png(image_path, dcm_path, slice_index, 22)
 
 
-remove_surplus_images()
-verify_files()
+def find_image_path_test():
+    base_folder = "..\\data\\testing"
+    breast_cancer_data = pd.read_csv(os.path.join(base_folder, f"BCS-DBT file-paths-all.csv"))
 
+    view_series1 = breast_cancer_data.iloc[7]
+
+    assert (find_image_path(base_folder, view_series1) == os.path.join(base_folder, "Breast-Cancer-Screening-DBT/DBT"
+                                                                                    "-P00008/01-01-2000-DBT-S04634"
+                                                                                    "-MAMMO screening digital "
+                                                                                    "bilateral-13809/13075.000000-NA"
+                                                                                    "-18259/"))
+
+    view_series2 = breast_cancer_data.iloc[13]
+
+    assert (find_image_path(base_folder, view_series2) == os.path.join(base_folder, "Breast-Cancer-Screening-DBT/DBT"
+                                                                                    "-P00014/01-01-2000-DBT-S03210"
+                                                                                    "-MAMMO screening digital "
+                                                                                    "bilateral-59408/15703.000000-NA"
+                                                                                    "-82412/"))
+
+    view_series3 = breast_cancer_data.iloc[23]
+
+    assert (find_image_path(base_folder, view_series3) == os.path.join(base_folder, "Breast-Cancer-Screening-DBT/DBT"
+                                                                                    "-P00025/01-01-2000-DBT-S05327"
+                                                                                    "-MAMMO screening digital "
+                                                                                    "bilateral-83887/12175.000000-NA"
+                                                                                    "-32032/"))
+
+
+find_image_path_test()

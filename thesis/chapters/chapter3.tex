@@ -5,11 +5,89 @@ In the interest of improving image classification, there have been many models d
 
 Of all of these models, I chose to integrate into my system GoogLeNet for classification and EfficientDet for detection.
 
-\section{GoogLeNet}
-This models first appereance was in an research paper published in 2014 called "Going Deeper with Convolutions"
-\textcolor{green}{please add a ref - see this ref \href{https://arxiv.org/abs/1409.4842}{link}}
-. The researches at Google, along with other universities, received that year the first place in the  ILSVRC 2014 image classification competition, by achieving a less error rate than the other contestants. They managed this by introducing new concepts, such as 1x1 convolution, global average pooling, inception module and auxiliary classifiers.
-\textcolor{green}{eu as aduaga aici cateva info despre arhitectura (sau o poza, ca sa se vada layerele) si despre cum se face trainingul (de exemplu, cum se calculeaza loss-ul, cum se face backpropagation, etc., ce inseamna acel InceptionBloc care e un element vital in deep learning)}
+\section{GoogLeNet Architecture}
+
+This models first appereance was in an research paper published in 2014 called "Going Deeper with Convolutions" ~\cite{carte13}. The researches at Google, along with other universities, received that year the first place in the  ILSVRC 2014 image classification competition, by achieving a less error rate than the other contestants. They managed this by introducing new concepts, such as 1x1 convolution, global average pooling, inception module and auxiliary classifiers. Table \ref{tab:tab11} shows the distribution of the layers in the GoogLe Net architecture.
+
+\begin{table}[H]
+    \centering
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|}
+        \hline
+        Type & Path size/Stride & Output size & Depth & \#1x1 & \#3x3 reduce & \#3x3 & \#5x5 reduce & \#5x5 & pool proj & params & ops\\
+        \hline \hline
+        Convolution & 7x7/2 & 112x112x64 & 1 & & & & & & & 2.7K & 34M \\
+        \hline
+        Maxpool & 3x3/2 & 56x56x64 & 0 & & & & & & & & \\
+        \hline
+        Convolution & 3x3/1 & 56x56x192 & 2 & & 64 & 192 & & & & 112K & 360M\\
+        \hline
+        MaxPool & 3x3/2 & 28x28x192 & 0 & & & & & & & & \\
+        \hline
+        Inception(3a) & & 28x28x256 & 2 & 64 & 96 & 128 & 16 & 32 & 32 & 159K & 128M \\
+        \hline
+        Inception(3b) & & 28x28x480 & 2 & 128 & 128 & 192 & 32 & 96 & 64 & 380K & 304M \\
+        \hline
+        Maxpool & 3x3/2 & 14x14x480 & 0 & & & & & & & & \\
+        \hline
+        Inception(4a) & & 14x14x512 & 2 & 192 & 96 & 208 & 16 & 48 & 64 & 364K & 73M \\
+        \hline
+        Inception(4b) & & 14x14x512 & 2 & 160 & 112 & 224 & 24 & 64 & 64 & 473K & 88M \\
+        \hline
+        Inception(4c) & & 14x14x512 & 2 & 128 & 128 & 256 & 24 & 64 & 64 & 463K & 100M \\
+        \hline
+        Inception(4d) & & 14x14x528 & 2 & 112 & 144 & 288 & 32 & 64 & 64 & 580K & 119M \\
+        \hline
+        Inception(4e) & & 14x14x832 & 2 & 256 & 160 & 320 & 32 & 128 & 128 & 840K & 170M \\
+        \hline
+        Maxpool & 3x3/2 & 7x7x832 & 0 & & & & & & & & \\
+        \hline
+        Inception(5a) & & 7x7x832 & 2 & 256 & 160 & 320 & 32 & 128 & 128 & 1072K & 54M \\
+        \hline
+        Inception(5b) & & 7x7x1024 & 2 & 384 & 192 & 384 & 48 & 128 & 128 & 1388K & 71M \\
+        \hline
+        Avgpool & 7x7/1 & 1x1x1024 & 0 & & & & & & & & \\
+        \hline
+        Dropout(40\%) & & 1x1x1024 & 0 & & & & & & & & \\
+        \hline
+        Linear & & 1x1x1000 & 1 & & & & & & & 1000K & 1M \\
+        \hline
+    \end{tabular}}
+    \caption{Layer structure of the GoogLeNet architecture}
+    \label{tab:tab11}
+\end{table}
+
+\subsection{1x1 convolution layer}
+
+The use of 1$\times$1 convolution reduces the overall number of parameters of the model ~\cite{link17}. The effect of this operation is increasing the depth of the model, which can help catch and understand complex patterns in the input images. Images \ref{fig:fig42} showcase how many parameters result from a 5$\times$5 convolution without a 1$\times$1 convolution as intermediate compared to one with the 1$\times$1 convolution. 
+
+\begin{figure}[H]
+    \subfigure[Without intermediate]{\includegraphics[width=0.45\linewidth]{figures/Figure55.png}}
+    \subfigure[With intermediate]{\includegraphics[width=0.45\linewidth]{figures/Figure56.png}}
+    \caption{Difference in parameters between convolution operations}
+    \label{fig:fig42}
+\end{figure}
+
+\subsection{Global Average Pooling}
+
+This method is also a method of decreasing the number of trainable parameters, which then reduces computation costs. Other architectures place their fully connected layers at the end of the network, which contain the largest number of parameters. To combat this, GoogLeNet proposes the global average pooling method, also used at the end of network, which takes a 7$\times$7 feature map and reduces it to 1$\times$1. Along with reducing the number of trainable parameters, this also increases accuracy by 0.6\%~\cite{link17}. 
+
+\subsection{Inception Module}
+
+While GoogLeNet is not the first architecture to use inception modules in it's configuration, it is the first to set the convolution size for each layer. In these modules, 1$\times$1, 3$\times$3 and 5$\times$5 along with 3$\times$3 max pooling layers are performed in parallel at the input, while the output of these convolutions are stacked in order to obtain one final output. The idea behind this is that convolution layers of different filter sizes will manage objects at multiple scales better ~\cite{link17}. Image \ref{fig:fig43} provides two examples of possible inception module concepts, n\"aive approach and the reduced dimensions one, the latter of which is used in the GoogLeNet architecture.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{figures/Figure57.png}
+    \caption{Difference between the two main concepts of the inception module, obtained from ~\cite{carte13}}
+    \label{fig:fig43}
+\end{figure}
+
+The main purpose of this second concept, employed by the GoogLeNet architecture is overall reduction of parameters. Adding the reduction of dimensions provides a 60\% decrease in number of parameters~\cite{carte14}.
+
+\subsection{Auxiliary Module}
+
+These modules, two in total, are used only during the training stage of the model. They help in combating gradient vanishing problem and providing regularization.
 
 \section{EfficientDet Architecture}
 

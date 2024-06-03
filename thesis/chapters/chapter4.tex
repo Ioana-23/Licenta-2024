@@ -6,32 +6,8 @@ The figure \ref{fig:fig33} bellow shows the pipeline of the system and how the i
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\linewidth]{figures/Figure38.png}
-    \caption{System flow
-    \textcolor{green}{logica diagramei e ok, dar oare nu se pot include niste imagini in chenare a.i. sa se observe mai usor exemplele normale vs cele maligne/benigne?}
-    }
+    \caption{System flow}
     \label{fig:fig33}
-\end{figure}
-
-
-\section{Databases used in detecting breast cancer}
-
-In the "Existing methods of detecting breast cancer" section of this thesis
-I mentioned the WDBC dataset that was used in detecting breast cancer in other research papers. This dataset, also known as Breast Cancer Wisconsin Diagnostic, is found on the website Kaggle, and consists of features extracted from digitized images of a fine needle aspirate, FNA, of a breast mass. The characteristics described, those being ten real values recorded with four significant digits, belong to the cell nuclei found in the images~\cite{link9}. 
-Figure \ref{fig:fig28} shows the distribution of the classes among the 569 instances.
-
-\begin{figure}[ht!]
-    \centering
-    \includegraphics[width=0.5\linewidth]{figures/Figure34.png}
-    \caption{Distribution of the classes of the WDBC database among the 569 inputs}
-    \label{fig:fig28}
-\end{figure}
-
-Other datasets used in breast cancer detection include the Breast Cancer dataset obtained form the University Medical Center, Institute of Oncology, Ljubljana, Yugoslavia. It contains 286 inputs, each with 9 features: class, age, menopause, tumour-size, inv-nodes, node-caps, deg-malig, breast, breast-squad and irradiat~\cite{link10}. Figure \ref{fig:fig29} shows the distribution of the classes.
-\begin{figure}[hb!]
-    \centering
-    \includegraphics[width=0.5\linewidth]{figures/Figure35.png}
-    \caption{Distribution of the classes of the Breast Cancer database among the 286 inputs}
-    \label{fig:fig29}
 \end{figure}
 
 \section{Breast Cancer Screening}
@@ -86,8 +62,6 @@ The batch size was 10, and the images were not resized, so I was training images
 \end{table}
 
 In order to track and compare each experiment, I used Weights \& Biases, also known as wanb, and logged the loss for each step, meaning that after each batch, the loss was calculated and added to the overall graph. Therefore, the image from Figure \ref{fig:fig8} shows the loss graph for the experiment described above.
-
-\textcolor{red}{ai limitat si nr de epoci? Daca da, la cat? cati steps intra intr-o epoca? daca nu, ai limitat nr de steps? Daca da, la cat?}
 
 \begin{figure}[!ht]
     \centering
@@ -361,7 +335,7 @@ Tables \ref{tab:tab4}, \ref{tab:tab5} and \ref{tab:tab6} shows the conclusions o
 
 After classifying the images into those with cancer and without, I wanted to see I could use a model to detect exactly where the tumor is thought to be. In doing so, I trained the model only on the images containing tumors.
 
-The database selected is the same one as the one for the classification problem, the WDBC dataset, from which I selected only the ones representing benign and malign images. Table \ref{tab:tab6} shows the distribution and size of the train and test data for the detection problem.
+The database selected is the same one as the one for the classification problem, the WDBC dataset, from which I selected only the ones representing benign and malign images. Table \ref{tab:tab7} shows the distribution and size of the train and test data for the detection problem.
 
 \begin{table}[ht!]
 \centering
@@ -372,7 +346,7 @@ The database selected is the same one as the one for the classification problem,
     Malign & 1012 & 110\\ \hline
     \end{tabular}
     \caption{Detection experiments distribution}
-    \label{tab:tab6}
+    \label{tab:tab7}
 \end{table}
 
 The images were resize to be 512$\times$512, meaning 262,144 features from each image, 22 slices from each 3D scan. Considering the fact that the images were resized in order to be 512$\times$512, I scaled the coordinates of the bounding boxes
@@ -380,9 +354,9 @@ The images were resize to be 512$\times$512, meaning 262,144 features from each 
 
 \subsection{Experiment 1}
 
-In the first implementation of this run, I opted to not use pre-trained weights in order to compare the proper results. With that purpose in mind, the first configuration included a learning rate of 0.0001 and a learning rate decay of ReduceLROnPlateau, with the minimum value for the learning rate being \(1e^{-8}\). However, this learning rate decay is only utilized after the test loop has finished running, and the metric used is the loss obtained for the test dataset. Also, the configuration for the EfficientDet is the first one, D-0, as it has the same image size as the size for the inputs used by me. The attributes associated with the D-0 type EfficientDet were obtained by calling the proper function from the library Effdet. 
+In the first implementation of this run, I opted to not use pre-trained weights in order to compare the proper results. With that purpose in mind, the first configuration included a learning rate of 0.0001 and a learning rate decay of ReduceLROnPlateau, with the minimum value for the learning rate being $1e^{-8}$. However, this learning rate decay is only utilized after the test loop has finished running, and the metric used is the loss obtained for the test dataset. Also, the configuration for the EfficientDet is the first one, D-0, as it has the same image size as the size for the inputs used by me. The attributes associated with the D-0 type EfficientDet were obtained by calling the proper function from the library Effdet. 
 
-The loss of both the detection problem and classification are calculated directly after running the forward-pass method in the main EfficientDet class, so in order to see exactly how the loss is calculated, I searched for the official implementation of the library on GitHub ~\cite{link7}. This method takes as input the class outputs from the model, the box outputs, the ground truth for the class and box and the positive numbers from the ground truth anchors; this method returns three parameters, the class loss, calculated as the focal loss with the formula \(-(1-pt)^{gamma} * log(pt), pt=probability\ of\ being\ classified\ to\ the\ true\ class\), the box regression loss and the total loss, computed as the sum between those two.
+The loss of both the detection problem and classification are calculated directly after running the forward-pass method in the main EfficientDet class, so in order to see exactly how the loss is calculated, I searched for the official implementation of the library on GitHub ~\cite{link7}. This method takes as input the class outputs from the model, the box outputs, the ground truth for the class and box and the positive numbers from the ground truth anchors; this method returns three parameters, the class loss, calculated as the focal loss with the formula $-(1-pt)^{gamma} * log(pt), pt=probability\ of\ being\ classified\ to\ the\ true\ class$, the box regression loss and the total loss, computed as the sum between those two.
 
 Figure \ref{fig:fig23} shows the loss for the train dataset and the test dataset. The big jumps from the steps in both graphs indicate that the missing steps in the train loss graph are in the test loss graph and vice versa. 
 
@@ -439,7 +413,7 @@ Figure \ref{fig:fig27} shows how the train and test loss looked after those 13 e
 
 \subsection{Experiment 4}
 
-In the next experiment, I changed the learning rate decay from ReduceLROnPlateau to CosineAnnealingLR, with a minimum learning rate of \(1e^{-6}\). I also modified the way the decay is applied, calling it after the each step in the train loop and using the loss as a metric rather than the test. Additionally, I modified the way the model is initialized; instead of manually downloading the file and loading a Pytorh script, I used the create\_model\_from\_config method from the Effdet library, calling it this way: \[
+In the next experiment, I changed the learning rate decay from ReduceLROnPlateau to CosineAnnealingLR, with a minimum learning rate of $1e^{-6}$. I also modified the way the decay is applied, calling it after the each step in the train loop and using the loss as a metric rather than the test. Additionally, I modified the way the model is initialized; instead of manually downloading the file and loading a Pytorh script, I used the create\_model\_from\_config method from the Effdet library, calling it this way: \[
 create\_model\_from\_config(bench\_task='train', num\_classes=2, pretrained=True)\]
 
 I also trained this model for 50 epochs, in the same way as experiment 3. Figure \ref{fig:fig12} shows how the train and test looked for the first 10 epochs, and figure \ref{fig:fig14} shows how the train and test looked for the 40 to 50 epochs.
@@ -460,11 +434,11 @@ I also trained this model for 50 epochs, in the same way as experiment 3. Figure
 
 \subsection{Experiment 5}
 
-For the next experiment I wanted to see exactly how the model would operate after I called the initialization method. I again consulted the official implementatin from GitHub ~\cite{link7} and discovered a key parameter, \(bench\_labeler\) that I did not include in my call. This parameter, taking boolean values, True or False, was included in the initialization of the class DetBenchTrain, if I chose to train the model rather than validate it. This goes on to be used in an if statement in the forward-pass method, and if this value proves to not be present in the call, it provides a warning before the code: \textit{target should contain pre-computed anchor labels if labeler not present in bench}. My pre-processing did not include any computing of anchor labels.
+For the next experiment I wanted to see exactly how the model would operate after I called the initialization method. I again consulted the official implementatin from GitHub ~\cite{link7} and discovered a key parameter, $bench\_labeler$ that I did not include in my call. This parameter, taking boolean values, True or False, was included in the initialization of the class DetBenchTrain, if I chose to train the model rather than validate it. This goes on to be used in an if statement in the forward-pass method, and if this value proves to not be present in the call, it provides a warning before the code: \textit{target should contain pre-computed anchor labels if labeler not present in bench}. My pre-processing did not include any computing of anchor labels.
 
 Anchors in the context of detection algorithms, also known as prior boxes, are bounding boxes computed before the actual training, that help the model better understand what size the objects in the images would be. For example, if the model was intended to recognize people from an image, the anchor boxes might be chosen to be taller rather than wider, as to match the aspect ratio of the shape of a person.~\cite{link11}
 
-The basic configuration that the Effdet library has to offer does include some anchor labels, based on the overall size of the images, so I chose to use those and see how the predictions would turn out. The way the model was initialized is this: \(create\_model\_from\_config(config=config, bench\_task='train', num\_classes=2, pretrained=True, bench\_labeler = True)\).
+The basic configuration that the Effdet library has to offer does include some anchor labels, based on the overall size of the images, so I chose to use those and see how the predictions would turn out. The way the model was initialized is this: $create\_model\_from\_config(config=config, bench\_task='train', num\_classes=2, pretrained=True, bench\_labeler = True)$.
 
 This proved to be a very good discovery. The hyper-parameters were the same as the previous experiment. I only ran one epoch of this configuration, so there is no test loss. Figure \ref{fig:fig34} shows how the train loss looked for the first epoch.
 
@@ -499,7 +473,7 @@ The image \ref{fig:fig36} shows real bounding boxes drawn on the picture they be
 
 As it appears the test loss increases each epoch, I chose to integrate into the system the model after 2 epochs. Therefore, the final configuration for the detection model is: batch size of 16, image size of 3$\times$512$\times$512, the images were normalized, learning rate of 0.0001 with a CosineAnnealing learning rate decay applied after each batch in the training loop and an Adam optimizer.
 
-Tables \ref{tab:tab7}, \ref{tab:tab8} and \ref{tab:tab9} show the conclussions of these experiments
+Tables \ref{tab:tab8}, \ref{tab:tab9} and \ref{tab:tab10} show the conclussions of these experiments
 
 \begin{table}[!ht]
     \centering
@@ -521,7 +495,7 @@ Tables \ref{tab:tab7}, \ref{tab:tab8} and \ref{tab:tab9} show the conclussions o
         \hline
     \end{tabular}
     \caption{Detection models}
-    \label{tab:tab7}
+    \label{tab:tab8}
 \end{table}
 
 \begin{table}[H]
@@ -543,7 +517,7 @@ Tables \ref{tab:tab7}, \ref{tab:tab8} and \ref{tab:tab9} show the conclussions o
 
     \end{tabular}
     \caption{Detection models(continuation)}
-    \label{tab:tab8}
+    \label{tab:tab9}
 \end{table}
 
 \begin{table}[H]
@@ -554,21 +528,21 @@ Tables \ref{tab:tab7}, \ref{tab:tab8} and \ref{tab:tab9} show the conclussions o
         % \hline
          & learning rate & learning rate decay & minimum lr &  step method called\\
         \hline \hline
-        Exp1 & 0.0001 & ReduceLROnPlateau & \(1e^{-8}\) & after test loop \\
+        Exp1 & 0.0001 & ReduceLROnPlateau & $1e^{-8}$ & after test loop \\
         \hline
-        Exp2 & 0.0001 & ReduceLROnPlateau & \(1e^{-8}\) & after test loop \\
+        Exp2 & 0.0001 & ReduceLROnPlateau & $1e^{-8}$ & after test loop \\
         \hline
-        Exp3 & 0.0001 & ReduceLROnPlateau & \(1e^{-8}\) & after test loop \\
+        Exp3 & 0.0001 & ReduceLROnPlateau & $1e^{-8}$ & after test loop \\
         \hline
-        \multirow{2}{*}{Exp4} & \multirow{2}{*}{0.0001} & \multirow{2}{*}{CosineAnnealingLR} & \multirow{2}{*}{\(1e^{-6}\)} & after each batch\\
+        \multirow{2}{*}{Exp4} & \multirow{2}{*}{0.0001} & \multirow{2}{*}{CosineAnnealingLR} & \multirow{2}{*}{$1e^{-6}$} & after each batch\\
         & & & & after train loop \\
         \hline
-        \multirow{2}{*}{Exp5} & \multirow{2}{*}{0.0001} & \multirow{2}{*}{CosineAnnealingLR} & \multirow{2}{*}{\(1e^{-6}\)} & after each batch\\
+        \multirow{2}{*}{Exp5} & \multirow{2}{*}{0.0001} & \multirow{2}{*}{CosineAnnealingLR} & \multirow{2}{*}{$1e^{-6}$} & after each batch\\
         & & & & after train loop \\
         \hline 
-        Exp6 & 0.0001 & CosineAnnealingLR & \(1e^{-6}\) & after each batch\\
+        Exp6 & 0.0001 & CosineAnnealingLR & $1e^{-6}$ & after each batch\\
         \hline
     \end{tabular}
     \caption{Detection models(continuation)}
-    \label{tab:tab9}
+    \label{tab:tab10}
 \end{table}
